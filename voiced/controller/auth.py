@@ -13,6 +13,14 @@ router = APIRouter()
 
 @router.post("/register")
 async def create_user(user: UserCreateDto, db: AsyncSession = Depends(get_db)):
+    user_exists = await db.execute(
+        select(User).where(
+            (User.username == user.username) | (User.email == user.email)
+        )
+    )
+    if user_exists.scalars().first() is not None:
+        raise HTTPException(status_code=400, detail="Username or email already taken")
+
     # Password hashing omitted to save time, in real case we need to hash the password
     db_user = User(username=user.username, email=user.email, hashed_password=user.password)
     db.add(db_user)
@@ -23,7 +31,6 @@ async def create_user(user: UserCreateDto, db: AsyncSession = Depends(get_db)):
 
 @router.post('/login')
 async def login(user_dto: UserDto, db: AsyncSession = Depends(get_db), authorize: AuthJWT = Depends()):
-    # Asynchronously fetching the user
     result = await db.execute(select(User).where(User.username == user_dto.username))
     db_user = result.scalars().first()
 

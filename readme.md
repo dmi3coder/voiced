@@ -56,18 +56,19 @@ curl --location --request POST 'localhost:8000/register' --header 'Content-Type:
 --data-raw '{
     "username": "dmytro",
     "email": "dmytro@gmail.com",
-    "password": "testtest22"
+    "password": "$Testtest22"
 }'
 ```
 
 ### Register second user
+
 
 ```shell
 curl --location --request POST 'localhost:8000/register' --header 'Content-Type: application/json' \
 --data-raw '{
     "username": "ivan",
     "email": "ivan@gmail.com",
-    "password": "testtest33"
+    "password": "$Testtest33"
 }'
 ```
 
@@ -78,7 +79,7 @@ export ACCESS_TOKEN=$(curl --location --request POST 'localhost:8000/login' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "username": "dmytro",
-    "password": "testtest22"
+    "password": "$Testtest22"
 }' | jq -r '.access_token')
 echo $ACCESS_TOKEN
 ```
