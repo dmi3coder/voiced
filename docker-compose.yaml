@@ -1,0 +1,11 @@
+version: '3.1'
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=voiced
+      - POSTGRES_PASSWORD=voiced
+      - POSTGRES_DB=voiced
+    ports:
+      - '5499:5432'
